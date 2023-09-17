@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.security.SecureRandom;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "app_database.db";
@@ -13,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Definir la tabla de usuarios y su estructura
     private static final String CREATE_TABLE_USERS =
             "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "username TEXT, password TEXT);";
+                    "username TEXT, password TEXT, salt BLOB);";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,12 +34,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Función para agregar un nuevo usuario a la base de datos
-    public long addUser(String username, String password) {
+    public long addUser(String username, String passwordHash, byte[] salt) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("username", username);
-        values.put("password", password);
+        values.put("password", passwordHash);
+        values.put("salt", salt);
 
         long newRowId = db.insert("users", null, values);
         db.close();
@@ -47,15 +49,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Función para autenticar un usuario
-    public boolean authenticateUser(String username, String password) {
+    public boolean authenticateUser(String username, String passwordHash) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ? AND password = ?",
-                new String[]{username, password});
+                new String[]{username, passwordHash});
 
         boolean success = cursor.moveToFirst();
         cursor.close();
         db.close();
 
         return success;
+    }
+
+    // Función para obtener el salt de un usuario por su nombre de usuario
+    public byte[] getSaltByUsername(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT salt FROM users WHERE username = ?",
+                new String[]{username});
+
+        byte[] salt = null;
+        if (cursor.moveToFirst()) {
+            salt = cursor.getBlob(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return salt;
     }
 }

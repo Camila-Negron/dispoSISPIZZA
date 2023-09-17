@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetallePizza1">
+
+    <ImageView
+        android:id="@+id/btBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"/>
+
+    <ImageView
+        android:id="@+id/imgProduct"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btDecrease"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:text="-"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#123456"
+            android:layout_margin="10dp"/>
+        
+        <TextView
+            android:id="@+id/txtAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btIncrease"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:text="+"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:backgroundTint="#123456"
+            android:layout_margin="10dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textNombreProducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mixed Pizza"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:id="@+id/textPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="84.00 bs"
+            android:textSize="18sp"
+            android:textColor="#FF0000"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_margin="20dp"/>
+
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salsas"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_margin="20dp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/btMostaza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mostaza"/>
+
+            <RadioButton
+                android:id="@+id/btKetchup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ketchup"/>
+
+            <RadioButton
+                android:id="@+id/btMayonesa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mayonesa"/>
+
+        </RadioGroup>
+        
+        <Button
+            android:id="@+id/btConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirmar"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_margin="20dp"/>
+
+
+
+
+
+
+</LinearLayout>

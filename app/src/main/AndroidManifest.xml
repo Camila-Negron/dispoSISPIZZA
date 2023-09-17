@@ -29,6 +29,11 @@
 
         <activity android:name=".RegistroActivity" />
 
+        <activity android:name=".DetallePizza1"
+            android:exported="false">
+        </activity>
+
+
 
     </application>
 
