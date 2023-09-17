@@ -6,15 +6,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="@drawable/bgregisterorange"
     android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registrar Usuario"
+        android:textColor="#FDFDFD"
+        android:layout_marginTop="100dp"
+        android:textSize="40dp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/etNuevoUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nuevo Usuario"
+        android:layout_marginTop="50dp"
         android:inputType="text"
         android:textSize="18sp"
+        android:textColor="@color/white"
         android:layout_marginBottom="16dp" />
 
     <EditText
@@ -23,16 +35,172 @@
         android:layout_height="wrap_content"
         android:hint="Nueva Contraseña"
         android:inputType="textPassword"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="La contraseña debera tener:"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardOne"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:cardBackgroundColor="#dcdcdc"
+            android:layout_gravity="center"
+            app:cardCornerRadius="25dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/baseline_check_24"
+                />
+
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center|start"
+            android:text="Al menos 8 caracteres"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTwo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:cardBackgroundColor="#dcdcdc"
+            android:layout_gravity="center"
+            app:cardCornerRadius="25dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/baseline_check_24"
+                />
+
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center|start"
+            android:text="Letra Mayuscula"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardThree"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:cardBackgroundColor="#dcdcdc"
+            android:layout_gravity="center"
+            app:cardCornerRadius="25dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/baseline_check_24"
+                />
+
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center|start"
+            android:text="Caracter numerico"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardFour"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:cardBackgroundColor="#dcdcdc"
+            android:layout_gravity="center"
+            app:cardCornerRadius="25dp"
+            >
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/baseline_check_24"
+                />
+
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center|start"
+            android:text="Al menos un simbolo"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/btnRegistrar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:enabled="false"
         android:text="Registrar"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#e69026"
         android:textSize="20sp"
-        android:background="#123456"
-        android:textColor="#FFFFFF" />
+         />
+
+
 
 </LinearLayout>

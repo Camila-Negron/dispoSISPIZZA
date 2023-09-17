@@ -1,6 +1,7 @@
 package com.example.sispizza;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
+
 import com.example.sispizza.database.DatabaseHelper;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +33,11 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         dbHelper = new DatabaseHelper(this);
+
+        
+        SharedPreferences myPreferences
+                = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor myEditor = myPreferences.edit();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +67,19 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                     }
                 } else {
+<<<<<<< HEAD
                     // Salt no encontrado en la base de datos, maneja el error...
+=======
+                    int intentos = myPreferences.getInt("INTENTOS", 0);
+
+                    myEditor.putInt("INTENTOS", intentos+1);
+                    myEditor.commit();
+
+                    // Autenticación fallida, mostrar un mensaje de error.
+                    Log.i("Authentication", "Autenticacion fallida, las credenciales no coinciden");
+                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+
+>>>>>>> f0382ac1aff80d914e668e0dd8c19486125acf18
                 }
             }
         });
