@@ -1,6 +1,7 @@
 package com.example.sispizza;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
+
 import com.example.sispizza.database.DatabaseHelper;
 
 import java.math.BigInteger;
@@ -34,6 +37,11 @@ public class LoginActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
+        
+        SharedPreferences myPreferences
+                = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor myEditor = myPreferences.edit();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,9 +59,15 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
+                    int intentos = myPreferences.getInt("INTENTOS", 0);
+
+                    myEditor.putInt("INTENTOS", intentos+1);
+                    myEditor.commit();
+
                     // Autenticación fallida, mostrar un mensaje de error.
                     Log.i("Authentication", "Autenticacion fallida, las credenciales no coinciden");
                     Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
