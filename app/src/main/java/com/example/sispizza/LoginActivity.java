@@ -1,6 +1,7 @@
 package com.example.sispizza;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,10 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
+
 import com.example.sispizza.database.DatabaseHelper;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.math.BigInteger;
+import java.util.Calendar;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -20,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnRegistrarse;
     private DatabaseHelper dbHelper;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         dbHelper = new DatabaseHelper(this);
 
+        SharedPreferences myPreferences
+                = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor myEditor = myPreferences.edit();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,29 +49,76 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Obtener el salt de la base de datos
                 String salt = dbHelper.getSaltByUsername(username);
+                int intentos = myPreferences.getInt("INTENTOS", 0);
+                Calendar calendar = Calendar.getInstance();
+                long fechaActualEnMinutos = calendar.getTimeInMillis() / (60 * 1000);
+                long fechaGuardada = myPreferences.getLong("FECHA", 0);
+                if(intentos>=3){
+                    if (fechaActualEnMinutos - fechaGuardada >= 1440) {
+                        // Ha pasado un día completo desde la fecha almacenada
 
-                if (salt != null) {
-                    // Combina el salt con la contraseña ingresada
-                    String saltedPassword = password + salt;
+                        changeDatePreferences();
+                        if (salt != null) {
+                            // Combina el salt con la contraseña ingresada
+                            String saltedPassword = password + salt;
 
-                    // Aplicando Encriptación SHA256
-                    String passwordConverted = bin2hex(getHash(saltedPassword));
-                    Log.i("Password Hash Converted", passwordConverted);
+                            // Aplicando Encriptación SHA256
+                            String passwordConverted = bin2hex(getHash(saltedPassword));
+                            Log.i("Password Hash Converted", passwordConverted);
 
-                    if (dbHelper.authenticateUser(username, passwordConverted)) {
-                        // Autenticación exitosa...
-                        Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                            if (dbHelper.authenticateUser(username, passwordConverted)) {
+                                // Autenticación exitosa...
+                                Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
+                                changeDatePreferences();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                // Autenticación fallida, mostrar un mensaje de error.
+                                verifyAttempts();
+                                Log.i("Authentication", "Autenticacion fallida, las credenciales no coinciden");
+                                Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            // Salt no encontrado en la base de datos
+                            verifyAttempts();
+                            Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                            Log.i("attempts counter", "Numero de intentos: " + intentos);
+                        }
                     } else {
-                        // Autenticación fallida, mostrar un mensaje de error.
-                        Log.i("Authentication", "Autenticacion fallida, las credenciales no coinciden");
-                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                        // No ha pasado un día completo
+                        Toast.makeText(LoginActivity.this, "Inicio de sesion bloqueado", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    // Salt no encontrado en la base de datos, maneja el error...
-                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                }else{
+                    if (salt != null) {
+                        // Combina el salt con la contraseña ingresada
+                        String saltedPassword = password + salt;
+
+                        // Aplicando Encriptación SHA256
+                        String passwordConverted = bin2hex(getHash(saltedPassword));
+                        Log.i("Password Hash Converted", passwordConverted);
+
+                        if (dbHelper.authenticateUser(username, passwordConverted)) {
+                            // Autenticación exitosa...
+                            Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
+                            changeDatePreferences();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            // Autenticación fallida, mostrar un mensaje de error.
+                            verifyAttempts();
+                            Log.i("Authentication", "Autenticacion fallida, las credenciales no coinciden");
+                            Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // Salt no encontrado en la base de datos
+                        verifyAttempts();
+                        Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                        Log.i("attempts counter", "Numero de intentos: " + intentos);
+                    }
+
                 }
+
+
             }
         });
 
@@ -90,5 +147,30 @@ public class LoginActivity extends AppCompatActivity {
 
     static String bin2hex(byte[] data) {
         return String.format("%0" + (data.length * 2) + "X", new BigInteger(1, data));
+    }
+
+    private void verifyAttempts(){
+        SharedPreferences myPreferences
+                = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor myEditor = myPreferences.edit();
+        int intentos = myPreferences.getInt("INTENTOS", 0);
+        myEditor.putInt("INTENTOS", intentos+1);
+
+        Log.i("attempts counter", "Numero de intentos: " + intentos);
+        if (intentos+1 == 3){
+            Calendar calendar = Calendar.getInstance();
+            long fechaActualEnMilisegundos = calendar.getTimeInMillis();
+            long fechaEnMinutos = fechaActualEnMilisegundos / (60 * 1000);
+            myEditor.putLong("FECHA", fechaEnMinutos);
+        }
+        myEditor.commit();
+    }
+    private void changeDatePreferences(){
+        SharedPreferences myPreferences
+                = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor myEditor = myPreferences.edit();
+        myEditor.putInt("INTENTOS", 0);
+        myEditor.putLong("FECHA", 0);
+        myEditor.commit();
     }
 }
