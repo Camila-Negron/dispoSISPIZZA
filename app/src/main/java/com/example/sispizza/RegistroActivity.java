@@ -54,17 +54,17 @@ public class RegistroActivity extends AppCompatActivity {
                 String nuevoUsuario = etNuevoUsuario.getText().toString();
                 String nuevaContraseña = etNuevaContraseña.getText().toString();
 
-<<<<<<< HEAD
+
                 // Genera un salt aleatorio
                 SecureRandom random = new SecureRandom();
                 byte[] salt = new byte[16];
                 random.nextBytes(salt);
-=======
+
 
 
                 // Aplicando Encriptacion SHA256
-                String passwordSha = bin2hex(getHash(nuevaContraseña));
->>>>>>> f0382ac1aff80d914e668e0dd8c19486125acf18
+                //String passwordSha = bin2hex(getHash(nuevaContraseña));
+
 
                 // Combina el salt con la contraseña
                 String saltedPassword = nuevaContraseña + new String(salt);
@@ -102,11 +102,11 @@ public class RegistroActivity extends AppCompatActivity {
         return digest.digest(password.getBytes());
     }
 
-<<<<<<< HEAD
+
     static String bin2hex(byte[] data) {
         return String.format("%0" + (data.length * 2) + "X", new BigInteger(1, data));
     }
-=======
+
     private boolean checkEmptyField(String user, String password){
         if (user.length()>0 && password.length()>0){
             return true;
@@ -196,5 +196,5 @@ public class RegistroActivity extends AppCompatActivity {
         });
     }
 
->>>>>>> f0382ac1aff80d914e668e0dd8c19486125acf18
+
 }
