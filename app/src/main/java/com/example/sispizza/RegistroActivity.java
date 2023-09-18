@@ -56,18 +56,15 @@ public class RegistroActivity extends AppCompatActivity {
 
 
                 // Genera un salt aleatorio
-                SecureRandom random = new SecureRandom();
-                byte[] salt = new byte[16];
-                random.nextBytes(salt);
-
-
+                String salt = generateSalt(16);
 
                 // Aplicando Encriptacion SHA256
                 //String passwordSha = bin2hex(getHash(nuevaContraseña));
 
 
                 // Combina el salt con la contraseña
-                String saltedPassword = nuevaContraseña + new String(salt);
+                String saltedPassword = nuevaContraseña + salt;
+                Log.i("salt saved", saltedPassword);
 
                 // Aplicando Encriptación SHA256
                 String passwordSha = bin2hex(getHash(saltedPassword));
@@ -195,6 +192,32 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
     }
+    public static String generateSalt(int length) {
+        // Longitud de bytes deseada (la longitud de la cadena de caracteres será mayor)
+        int byteLength = length / 2; // Divide por 2 porque cada byte se representa como dos caracteres hexadecimales
 
+        // Genera bytes aleatorios
+        byte[] saltBytes = new byte[byteLength];
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(saltBytes);
+
+        // Convierte los bytes en una cadena hexadecimal
+        String salt = bytesToHex(saltBytes);
+
+        return salt;
+    }
+
+    // Convierte un arreglo de bytes en una cadena hexadecimal
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(0xFF & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
 
 }

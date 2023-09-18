@@ -38,11 +38,11 @@ public class LoginActivity extends AppCompatActivity {
                 String password = etPassword.getText().toString();
 
                 // Obtener el salt de la base de datos
-                byte[] salt = dbHelper.getSaltByUsername(username);
+                String salt = dbHelper.getSaltByUsername(username);
 
                 if (salt != null) {
                     // Combina el salt con la contraseña ingresada
-                    String saltedPassword = password + new String(salt);
+                    String saltedPassword = password + salt;
 
                     // Aplicando Encriptación SHA256
                     String passwordConverted = bin2hex(getHash(saltedPassword));
@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 } else {
                     // Salt no encontrado en la base de datos, maneja el error...
+                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                 }
             }
         });
