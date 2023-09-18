@@ -1,6 +1,7 @@
 package com.example.sispizza;
 
 import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,9 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnRegistrarse;
     private DatabaseHelper dbHelper;
 
+    private Context mContext;
+
+
 
 
     @Override
@@ -40,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences myPreferences
                 = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor myEditor = myPreferences.edit();
+
+        mContext = this; // Asignar el Context actual
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                             String passwordConverted = bin2hex(getHash(saltedPassword));
                             Log.i("Password Hash Converted", passwordConverted);
 
-                            if (dbHelper.authenticateUser(username, passwordConverted)) {
+                            if (dbHelper.authenticateUser(username, passwordConverted,mContext)) {
                                 // Autenticación exitosa...
                                 Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
                                 changeDatePreferences();
@@ -97,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                         String passwordConverted = bin2hex(getHash(saltedPassword));
                         Log.i("Password Hash Converted", passwordConverted);
 
-                        if (dbHelper.authenticateUser(username, passwordConverted)) {
+                        if (dbHelper.authenticateUser(username, passwordConverted,mContext)) {
                             // Autenticación exitosa...
                             Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
                             changeDatePreferences();

@@ -1,10 +1,14 @@
 package com.example.sispizza.database;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.sispizza.ChangePasswordActivity;
+
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,17 +58,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Función para autenticar un usuario
-    public boolean authenticateUser(String username, String passwordHash) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ? AND password = ?",
-                new String[]{username, passwordHash});
+    public boolean authenticateUser(String username, String passwordHash, Context context) {
+        if (isPasswordChangeRequired(username)) {
+            // Redirigir al usuario a la ventana de cambio de contraseña
+            Intent intent = new Intent(context, ChangePasswordActivity.class);
+            intent.putExtra("username", username); // Pasar el nombre de usuario a la nueva actividad
+            context.startActivity(intent);
+            return false; // Indicar que el usuario debe cambiar la contraseña
+        } else {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ? AND password = ?",
+                    new String[]{username, passwordHash});
 
-        boolean success = cursor.moveToFirst();
-        cursor.close();
-        db.close();
+            boolean success = cursor.moveToFirst();
+            cursor.close();
+            db.close();
 
-        return success;
+            return success;
+        }
     }
+
 
     // Función para obtener el salt de un usuario por su nombre de usuario
     public String getSaltByUsername(String username) {
@@ -114,4 +127,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+    public boolean isPasswordChangeRequired(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT creation_date FROM users WHERE username = ?",
+                new String[]{username});
+
+        if (cursor.moveToFirst()) {
+            long creationDate = cursor.getLong(0);
+            cursor.close();
+            db.close();
+
+            // Calcular la diferencia en milisegundos entre la fecha actual y la creación de la contraseña
+            long currentTime = System.currentTimeMillis();
+            long difference = currentTime - creationDate;
+
+            // Definir el límite de tres meses en milisegundos (90 días * 24 horas * 60 minutos * 60 segundos * 1000)
+            long threeMonthsInMillis = 90 * 24 * 60 * 60 * 1000;
+
+            return difference > threeMonthsInMillis;
+        } else {
+            cursor.close();
+            db.close();
+            return false; // El usuario no existe en la base de datos
+        }
+    }
+
 }
