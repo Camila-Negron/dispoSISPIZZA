@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import java.util.ArrayList;
 
 import com.example.sispizza.ChangePasswordActivity;
 
@@ -17,27 +18,37 @@ import java.util.TimeZone;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "app_database.db";
-    private static final int DATABASE_VERSION = 3; // Actualiza la versión de la base de datos
+    private static final int DATABASE_VERSION = 6; // Actualiza la versión de la base de datos
 
     // Definir la tabla de usuarios y su estructura
     private static final String CREATE_TABLE_USERS =
-            "CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "username TEXT, password TEXT, salt TEXT, creation_date DATETIME);";
 
+    //constructor
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    // Definir la tabla de pedido y su estructura
+    private static final String CREATE_TABLE_PEDIDO =
+            "CREATE TABLE IF NOT EXISTS pedido (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "cliente TEXT, descripcion TEXT, cantidad INTEGER, precio_total REAL, salsa TEXT);";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Crear la tabla de usuarios cuando se crea la base de datos
+        // Crea la tabla de usuarios en la base de datos
         db.execSQL(CREATE_TABLE_USERS);
+
+        // Crea la tabla de pedido en la base de datos
+        db.execSQL(CREATE_TABLE_PEDIDO);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Manejar la actualización de la base de datos si es necesario
         db.execSQL("DROP TABLE IF EXISTS users");
+        db.execSQL("DROP TABLE IF EXISTS pedido");
         onCreate(db);
     }
 
@@ -56,6 +67,74 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return newRowId;
     }
+
+    public long addPedido(String cliente,String descripcion, int cantidad, double precioTotal, String salsa) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("cliente", cliente);
+        values.put("descripcion", descripcion);
+        values.put("cantidad", cantidad);
+        values.put("precio_total", precioTotal);
+        values.put("salsa", salsa);
+
+        //long newRowId = db.insert(TABLE_NAME, null, values);
+        //db.close();
+
+        //return newRowId;
+
+        long newRowId = db.insert("pedido", null, values);
+        db.close();
+
+        return newRowId;
+    }
+
+    // Método para obtener la lista de pedidos desde la base de datos
+    public ArrayList<String> obtenerListaPedidos() {
+        ArrayList<String> listaPedidos = new ArrayList<>();
+
+        // Abre una conexión de lectura a la base de datos
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Consulta la base de datos para obtener los pedidos
+        String query = "SELECT * FROM pedido";
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Obtiene los índices de las columnas
+        int clienteIndex = cursor.getColumnIndex("cliente");
+        int descripcionIndex = cursor.getColumnIndex("descripcion");
+        int cantidadIndex = cursor.getColumnIndex("cantidad");
+        int precioTotalIndex = cursor.getColumnIndex("precio_total");
+        int salsaIndex = cursor.getColumnIndex("salsa");
+
+        // Itera a través del resultado de la consulta y agrega los pedidos a la lista
+        if (cursor.moveToFirst()) {
+            do {
+                // Utiliza los índices para obtener los valores de las columnas
+                String cliente = cursor.getString(clienteIndex);
+                String descripcion = cursor.getString(descripcionIndex);
+                int cantidad = cursor.getInt(cantidadIndex);
+                double precioTotal = cursor.getDouble(precioTotalIndex);
+                String salsa = cursor.getString(salsaIndex);
+
+                // Construye una cadena que represente el pedido y agrégala a la lista
+                String pedidoString = "Cliente: " + cliente + ", Descripción: " + descripcion +
+                        ", Cantidad: " + cantidad + ", Precio Total: " + precioTotal +
+                        ", Salsa: " + salsa;
+                listaPedidos.add(pedidoString);
+            } while (cursor.moveToNext());
+        }
+
+        // Cierra el cursor y la conexión de la base de datos
+        cursor.close();
+        db.close();
+
+        // Devuelve la lista de pedidos
+        return listaPedidos;
+    }
+
+
+
 
     // Función para autenticar un usuario
     public boolean authenticateUser(String username, String passwordHash, Context context) {
@@ -129,7 +208,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean isPasswordChangeRequired(String username) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        return false; 
+        /*SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT creation_date FROM users WHERE username = ?",
                 new String[]{username});
 
@@ -150,7 +230,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             return false; // El usuario no existe en la base de datos
-        }
+        }*/
     }
 
 }

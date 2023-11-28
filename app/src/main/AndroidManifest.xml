@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Agrega una nueva actividad llamada "MainActivity" -->
+        <!-- Agrega una nueva actividad llamada "MainActivity"-->
         <activity
             android:name=".MainActivity"
             android:exported="false">
@@ -29,11 +29,16 @@
 
         <activity android:name=".RegistroActivity" />
 
-        <activity android:name=".DetallePizza1"
-            android:exported="false">
+        <activity
+            android:name=".DetallePizza1"
+            android:label="DetallePizza1">
         </activity>
 
         <activity android:name=".ChangePasswordActivity"
+            android:exported="false">
+        </activity>
+
+        <activity android:name=".ListaPedidosActivity"
             android:exported="false">
         </activity>
 

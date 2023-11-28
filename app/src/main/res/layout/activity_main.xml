@@ -7,15 +7,32 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <SearchView
-        android:id="@+id/searchView"
+    <!-- Botón de Carrito de Compras -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:iconifiedByDefault="false"
-        android:queryHint="Buscar..."
-        android:layout_margin="20dp"
-        app:queryBackground="@android:color/white"
-        />
+        android:orientation="horizontal">
+
+        <!-- SearchView existente -->
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:iconifiedByDefault="false"
+            android:queryHint="Buscar..."
+            android:layout_margin="20dp"
+            app:queryBackground="@android:color/white"
+            />
+
+        <!-- Nuevo botón para el carrito de compras -->
+        <Button
+            android:id="@+id/btCarrito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carrito" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 long fechaActualEnMinutos = calendar.getTimeInMillis() / (60 * 1000);
                 long fechaGuardada = myPreferences.getLong("FECHA", 0);
                 if(intentos>=3){
-                    if (fechaActualEnMinutos - fechaGuardada >= 1440) {
+                    if (fechaActualEnMinutos - fechaGuardada >= 1) {
                         // Ha pasado un día completo desde la fecha almacenada
 
                         changeDatePreferences();

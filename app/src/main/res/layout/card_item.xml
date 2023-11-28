@@ -38,6 +38,18 @@
                 android:textSize="16sp"
                 android:textColor="@android:color/black"/>
 
+            <!-- Precio -->
+            <TextView
+                android:id="@+id/textPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="84.00 bs"
+                android:textSize="18sp"
+                android:textColor="#FF0000"
+                android:textStyle="bold"
+                android:gravity="end"
+                android:layout_margin="20dp"/>
+
             <!-- Botón para más detalles -->
             <Button
                 android:id="@+id/btDetalle"

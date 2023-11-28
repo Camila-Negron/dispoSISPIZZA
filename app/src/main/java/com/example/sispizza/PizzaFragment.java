@@ -29,12 +29,12 @@ public class PizzaFragment extends Fragment {
 
                 List<Pizza> pizzaList = new ArrayList<>();
                 // Agrega elementos Pizza a la lista
-                pizzaList.add(new Pizza("Pizza Boliviana", R.drawable.boliviana, "Locoto, Tomate, mozzarella y albahaca."));
-                pizzaList.add(new Pizza("Pizza Champiñon", R.drawable.champi, "Champiñom y queso fundido."));
-                pizzaList.add(new Pizza("Pizza Hawaiana", R.drawable.hawaiana, "Piña, Vegetales frescos y queso."));
-                pizzaList.add(new Pizza("Pizza Margarita", R.drawable.camaron, "Camaron, Tomate, mozzarella y albahaca."));
-                pizzaList.add(new Pizza("Pizza Pepperoni", R.drawable.mariscos, "Pepperoni y queso fundido."));
-                pizzaList.add(new Pizza("Pizza Vegetariana", R.drawable.napolitana, "Vegetales frescos y queso."));
+                pizzaList.add(new Pizza("Pizza Boliviana", R.drawable.boliviana, "Locoto, Tomate, mozzarella y albahaca.",60.50));
+                pizzaList.add(new Pizza("Pizza Champiñon", R.drawable.champi, "Champiñom y queso fundido.",47.50));
+                pizzaList.add(new Pizza("Pizza Hawaiana", R.drawable.hawaiana, "Piña, Vegetales frescos y queso.",55.50));
+                pizzaList.add(new Pizza("Pizza Margarita", R.drawable.camaron, "Camaron, Tomate, mozzarella y albahaca.",50.50));
+                pizzaList.add(new Pizza("Pizza Pepperoni", R.drawable.mariscos, "Pepperoni y queso fundido.",45.50));
+                pizzaList.add(new Pizza("Pizza Vegetariana", R.drawable.napolitana, "Vegetales frescos y queso.",65.50));
 
                 adapter = new PizzaAdapter( pizzaList);
 
@@ -42,13 +42,17 @@ public class PizzaFragment extends Fragment {
                         @Override
                         public void onDetalleClick(int position) {
                                 // Manejar el clic del botón "Detalles" aquí
+
                                 Toast.makeText(getActivity(), "Detalles de la pizza en la posición " + position, Toast.LENGTH_SHORT).show();
                                 if (position == 0) {
                                         // Crea un intent para abrir la actividad de detalles
                                         Intent intent = new Intent(getActivity(), DetallePizza1.class);
+
                                         startActivity(intent);
                                 }
                         }
+
+
                 });
 
 
