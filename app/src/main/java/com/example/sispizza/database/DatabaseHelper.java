@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.ArrayList;
 import com.example.sispizza.Product;
 
@@ -259,15 +261,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Métodos para insertar, obtener, actualizar y eliminar productos...
 
     public void addProduct(Product product) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        // Registro de intento de añadir producto
+        Log.i("DatabaseHelper", "Intentando añadir producto: " + product.getName());
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, product.getName());
-        values.put(COLUMN_PRICE, product.getPrice());
+        // Validación de los datos del producto
+        if (!isValidProduct(product)) {
+            Log.e("DatabaseHelper", "Datos del producto inválidos: " + product.getName());
+            return;
+        }
 
-        db.insert(TABLE_PRODUCTS, null, values);
-        db.close();
+        SQLiteDatabase db = null;
+        try {
+            db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NAME, product.getName());
+            values.put(COLUMN_PRICE, product.getPrice());
+
+            long result = db.insert(TABLE_PRODUCTS, null, values);
+
+            if (result == -1) {
+                Log.e("DatabaseHelper", "Error al añadir producto: " + product.getName());
+            } else {
+                Log.i("DatabaseHelper", "Producto añadido exitosamente: " + product.getName());
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Excepción al añadir producto: " + product.getName(), e);
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
     }
+
+    private boolean isValidProduct(Product product) {
+        return product != null && isValidName(product.getName()) && isValidPrice(product.getPrice());
+    }
+
+    private boolean isValidName(String name) {
+        // Implementa tu lógica de validación aquí
+        return name != null && !name.trim().isEmpty();
+    }
+
+    private boolean isValidPrice(double price) {
+        // Implementa tu lógica de validación aquí
+        return price > 0;
+    }
+
 
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
