@@ -10,6 +10,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,7 +111,9 @@ public class DetallePizza1 extends AppCompatActivity {
                     // El pedido se agregó exitosamente a la base de datos
                     mostrarMensaje("Pedido confirmado y guardado en la base de datos.");
                     Log.d("DetallePizzaButton", "Posible error aqui: 4");
-                    Intent intent = new Intent(DetallePizza1.this, ListaPedidosActivity.class);
+                    Toast.makeText(DetallePizza1.this, "Se Realizo el pedido", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(DetallePizza1.this, MainActivity.class);
                     Log.d("DetallePizzaButton", "Posible error aqui: ");
                     startActivity(intent);
 
@@ -123,12 +127,14 @@ public class DetallePizza1 extends AppCompatActivity {
 
     private void incrementarCantidad() {
         cantidad++;
+        Log.d("DetallePizzaPRecio", "Cambio de precio3");
         actualizarCantidadYPrecio();
     }
 
     private void decrementarCantidad() {
         if (cantidad > 1) {
             cantidad--;
+            Log.d("DetallePizzaPRecio", "Cambio de precio2");
             actualizarCantidadYPrecio();
         }
     }
@@ -138,14 +144,17 @@ public class DetallePizza1 extends AppCompatActivity {
     }
 
     private void actualizarPrecio() {
-        double precioTotal = cantidad * precioPizza;
+        double precioTotal = cantidad * (precioPizza+17);
+        Log.d("DetallePizzaPRecio", "Cambio de precio");
         String precioFormateado = String.format("Bs. %.2f", precioTotal);
+        Log.d("DetallePizzaPRecio", "Cambio de precio real"+precioFormateado);
         textPrice.setText(precioFormateado);
     }
 
     private void actualizarCantidadYPrecio() {
         actualizarCantidad();
         actualizarPrecio();
+        Log.d("DetallePizzaPRecio", "Cambio de precio4");
     }
 
     private String obtenerSalsaSeleccionada(RadioGroup radioGroup) {

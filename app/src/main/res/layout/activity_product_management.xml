@@ -8,15 +8,107 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gestión de Productos"
+        android:textColor="@color/accent"
         android:textSize="24sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
 
+    <!-- Campos para productos vendidos -->
+    <TextView
+        android:id="@+id/asss"
+        android:layout_width="372dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:text="Productos Vendidos:           10" />
+
+    <!-- Switch para el proceso de venta en línea -->
+    <TextView
+        android:id="@+id/switchOnlineSale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Venta en Línea"
+        android:layout_below="@id/asss"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
+
+    <!-- Campos para ingreso diario, egreso diario, ingreso total, egreso total y ganancias -->
+    <TextView
+        android:id="@+id/textViewDailyIncome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingreso Diario:                      $100"
+        android:layout_below="@id/switchOnlineSale"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
+
+    <TextView
+        android:id="@+id/textViewDailyExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Egreso Diario:                       $50"
+        android:layout_below="@id/textViewDailyIncome"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
+
+    <TextView
+        android:id="@+id/textViewTotalIncome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingreso Total:                        $1000"
+        android:layout_below="@id/textViewDailyExpense"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
+
+    <TextView
+        android:id="@+id/textViewTotalExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Egreso Total:                         $500"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:layout_below="@id/textViewTotalIncome"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
+
+    <TextView
+        android:id="@+id/textViewProfit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ganancias:                             $500"
+        android:textColor="#FF9800"
+        android:textSize="20sp"
+        android:layout_below="@id/textViewTotalExpense"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/asss"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="13dp"
+        android:layout_toEndOf="@+id/switchOnlineSale" />
     <ListView
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTitle"
         android:layout_marginTop="16dp" />
+
+    <!-- Botón para realizar alguna acción -->
+
 
 </RelativeLayout>

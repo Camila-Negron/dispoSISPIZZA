@@ -30,6 +30,8 @@
             android:id="@+id/btCarrito"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/accent"
+            android:backgroundTint="#123456"
             android:text="Carrito" />
 
     </LinearLayout>
@@ -58,7 +60,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#CED0D1"
+                    android:backgroundTint="#e69026"
                     android:text="Pizza"
                     android:textSize="25dp" />
 
@@ -70,7 +72,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#CED0D1"
+                    android:backgroundTint="#e69026"
                     android:text="Ensalada"
                     android:textSize="25dp" />
 
@@ -82,7 +84,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#CED0D1"
+                    android:backgroundTint="#e69026"
                     android:text="Guarniciones"
                     android:textSize="25dp" />
 
@@ -94,7 +96,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#CED0D1"
+                    android:backgroundTint="#e69026"
                     android:text="Bebidas"
                     android:textSize="25dp" />
 

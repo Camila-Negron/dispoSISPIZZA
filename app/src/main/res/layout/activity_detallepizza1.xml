@@ -15,10 +15,12 @@
 
     <ImageView
         android:id="@+id/imgProduct"
-        android:layout_width="250dp"
+        android:layout_width="325dp"
         android:layout_height="250dp"
+        android:layout_gravity="center"
+
         android:scaleType="centerCrop"
-        android:layout_gravity="center"/>
+        app:srcCompat="@drawable/napolitana" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,6 +34,7 @@
             android:layout_height="50dp"
             android:text="-"
             android:textSize="18sp"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:backgroundTint="#123456"
             android:layout_margin="10dp"/>
@@ -49,6 +52,7 @@
             android:layout_width="60dp"
             android:layout_height="50dp"
             android:text="+"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             android:backgroundTint="#123456"
@@ -78,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="84.00 bs"
             android:textSize="18sp"
-            android:textColor="#FF0000"
+            android:textColor="#e69026"
             android:textStyle="bold"
             android:gravity="end"
             android:layout_margin="20dp"/>
@@ -124,8 +128,8 @@
         android:id="@+id/etCliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Cliente"
-        android:textColor="#000000"
+        android:hint="Detalles adicionales"
+        android:textColor="#FFFFFF"
         android:textColorHint="#CCCCCC"
         android:textSize="22dp" />
         
@@ -134,7 +138,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Confirmar"
-            android:textSize="18sp"
+            android:textSize="22dp"
+            android:backgroundTint="#e69026"
             android:textStyle="bold"
             android:padding="10dp"
             android:layout_margin="20dp"/>

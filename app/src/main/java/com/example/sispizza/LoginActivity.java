@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 String salt = dbHelper.getSaltByUsername(username);
                 int intentos = myPreferences.getInt("INTENTOS", 0);
                 Calendar calendar = Calendar.getInstance();
-                long fechaActualEnMinutos = calendar.getTimeInMillis() / (60 * 1000);
+                long fechaActualEnMinutos = calendar.getTimeInMillis() / (10 * 1000);
                 long fechaGuardada = myPreferences.getLong("FECHA", 0);
                 if(intentos>=3){
                     if (fechaActualEnMinutos - fechaGuardada >= 1) {
@@ -74,10 +74,18 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (dbHelper.authenticateUser(username, passwordConverted,mContext)) {
                                 // Autenticación exitosa...
-                                Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
-                                changeDatePreferences();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
+                                if(username=="admintest"){
+                                    Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal22222");
+                                    changeDatePreferences();
+                                    Intent intent = new Intent(LoginActivity.this, ProductManagementActivity.class);
+                                    startActivity(intent);
+                                }else {
+                                    Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
+                                    changeDatePreferences();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+
                             } else {
                                 // Autenticación fallida, mostrar un mensaje de error.
                                 verifyAttempts();
@@ -105,10 +113,17 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (dbHelper.authenticateUser(username, passwordConverted,mContext)) {
                             // Autenticación exitosa...
-                            Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
-                            changeDatePreferences();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
+                            if(username=="admintest"){
+                                Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal222222");
+                                changeDatePreferences();
+                                Intent intent = new Intent(LoginActivity.this, ProductManagementActivity.class);
+                                startActivity(intent);
+                            }else {
+                                Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal");
+                                changeDatePreferences();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
                         } else {
                             // Autenticación fallida, mostrar un mensaje de error.
                             verifyAttempts();
