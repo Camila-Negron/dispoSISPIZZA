@@ -217,8 +217,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean isPasswordChangeRequired(String username) {
-        //return false;
-        SQLiteDatabase db = this.getReadableDatabase();
+        return false;
+        /*SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT creation_date FROM users WHERE username = ?",
                 new String[]{username});
 
@@ -239,7 +239,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             return false; // El usuario no existe en la base de datos
-        }
+        }*/
     }
 
 
