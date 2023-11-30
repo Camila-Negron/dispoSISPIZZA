@@ -1,61 +1,69 @@
-package com.example.sispizza;
+package com.example.sispizza; // Asegúrate de usar el nombre de paquete correcto
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Button;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.sispizza.database.DatabaseHelper;
-import java.util.ArrayList;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.sispizza.database.DatabaseHelper; // Importa tu clase DatabaseHelper
+
+import java.util.ArrayList;
 
 public class ListaPedidosActivity extends AppCompatActivity {
 
     private ListView listView;
-    private ArrayAdapter<String> adapter;
-    private DatabaseHelper dbHelper;
     private TextView totalPedido;
     private Button botonPagar;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_pedidos);
-        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_lista_pedidos); // Usa el layout correcto
 
-        // Inicializa la base de datos
-        dbHelper = new DatabaseHelper(this);
-
-        // Obtén una referencia al ListView en tu diseño
         listView = findViewById(R.id.listView);
-
-        // Obtén la lista de pedidos desde la base de datos (esto dependerá de tu implementación)
-        ArrayList<String> listaPedidos = dbHelper.obtenerListaPedidos();
-
-        // Crea un adaptador para mostrar la lista en el ListView
-        adapter = new ArrayAdapter<>(this, R.layout.item_pedido, listaPedidos);
-
-        // Configura el adaptador en el ListView
-        listView.setAdapter(adapter);
-
-        // Inicializa el texto del total y el botón de pagar
         totalPedido = findViewById(R.id.totalPedido);
         botonPagar = findViewById(R.id.botonPagar);
 
-        // Calcula y muestra el total del pedido (esto dependerá de tu implementación)
-        totalPedido.setText("Total: $" + calcularTotalPedido(listaPedidos));
-
-        // Agrega funcionalidad al botón de pagar (esto dependerá de tu implementación)
-        botonPagar.setOnClickListener(v -> {
-            // Aquí iría la lógica para realizar el pago
-        });
+        configurarListView();
+        configurarBotonPagar();
     }
 
-    private double calcularTotalPedido(ArrayList<String> listaPedidos) {
+    private void configurarListView() {
+        DatabaseHelper db = new DatabaseHelper(this);
+        ArrayList<String> listaPedidos = db.obtenerListaPedidos();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listaPedidos);
+        listView.setAdapter(adapter);
+
+        // Aquí, calcula y actualiza el total de los pedidos
+        actualizarTotalPedidos(listaPedidos);
+    }
+
+    private void actualizarTotalPedidos(ArrayList<String> pedidos) {
         double total = 0.0;
-        // Aquí implementarías la lógica para sumar el total de los pedidos
-        return total;
+        // Suponiendo que cada elemento en 'pedidos' tiene el formato "Precio Total: $X.XX"
+        for (String pedido : pedidos) {
+            String[] partes = pedido.split(", ");
+            for (String parte : partes) {
+                if (parte.startsWith("Precio Total: ")) {
+                    String precio = parte.replace("Precio Total: $", "");
+                    total += Double.parseDouble(precio);
+                }
+            }
+        }
+        totalPedido.setText("Total: $" + String.format("%.2f", total));
+    }
+
+    private void configurarBotonPagar() {
+        botonPagar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Aquí implementarías la lógica del proceso de pago
+            }
+        });
     }
 }

@@ -7,12 +7,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
+import com.example.sispizza.Product;
+
 
 import com.example.sispizza.ChangePasswordActivity;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -42,6 +45,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Crea la tabla de pedido en la base de datos
         db.execSQL(CREATE_TABLE_PEDIDO);
+
+        //tabla productos
+        db.execSQL(TABLE_CREATE);
     }
 
     @Override
@@ -49,6 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Manejar la actualización de la base de datos si es necesario
         db.execSQL("DROP TABLE IF EXISTS users");
         db.execSQL("DROP TABLE IF EXISTS pedido");
+        db.execSQL("DROP TABLE IF EXISTS products");
         onCreate(db);
     }
 
@@ -208,8 +215,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean isPasswordChangeRequired(String username) {
-        return false; 
-        /*SQLiteDatabase db = this.getReadableDatabase();
+        //return false;
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT creation_date FROM users WHERE username = ?",
                 new String[]{username});
 
@@ -230,7 +237,76 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             return false; // El usuario no existe en la base de datos
-        }*/
+        }
     }
+
+
+    private static final String TABLE_PRODUCTS = "products";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_PRICE = "price";
+
+    private static final String TABLE_CREATE =
+            "CREATE TABLE " + TABLE_PRODUCTS + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_NAME + " TEXT, " +
+                    COLUMN_PRICE + " REAL)";
+
+
+
+
+
+    // Métodos para insertar, obtener, actualizar y eliminar productos...
+
+    public void addProduct(Product product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, product.getName());
+        values.put(COLUMN_PRICE, product.getPrice());
+
+        db.insert(TABLE_PRODUCTS, null, values);
+        db.close();
+    }
+
+    public List<Product> getAllProducts() {
+        List<Product> productList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_PRODUCTS, new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_PRICE}, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = new Product(cursor.getString(1), cursor.getDouble(2));
+                productList.add(product);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return productList;
+    }
+
+
+    public int updateProduct(Product product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, product.getName());
+        values.put(COLUMN_PRICE, product.getPrice());
+
+        // Actualizar fila
+        return db.update(TABLE_PRODUCTS, values, COLUMN_ID + " = ?", new String[]{String.valueOf(product.getId())});
+    }
+
+
+    public void deleteProduct(Product product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PRODUCTS, COLUMN_ID + " = ?", new String[]{String.valueOf(product.getId())});
+        db.close();
+    }
+
+
+
 
 }

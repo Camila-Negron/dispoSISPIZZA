@@ -82,15 +82,18 @@ public class MainActivity extends AppCompatActivity {
 
         btCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ListaPedidosActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                abrirListaPedidos();
             }
         });
 
 
 
 
+    }
+    private void abrirListaPedidos() {
+        Intent intent = new Intent(this, ListaPedidosActivity.class);
+        startActivity(intent);
     }
 
 
