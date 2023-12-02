@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (dbHelper.authenticateUser(username, passwordConverted,mContext)) {
                                 // Autenticación exitosa...
-                                if(username=="admintest"){
+                                if(username.equals("admintest")){
                                     Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal22222");
                                     changeDatePreferences();
                                     Intent intent = new Intent(LoginActivity.this, ProductManagementActivity.class);
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Salt no encontrado en la base de datos
                             verifyAttempts();
                             Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-                            Log.i("attempts counter", "Numero de intentos: " + intentos);
+                            Log.i("attempts counter", "Numero de intentos (dbhelper): " + intentos);
                         }
                     } else {
                         // No ha pasado un día completo
@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (dbHelper.authenticateUser(username, passwordConverted,mContext)) {
                             // Autenticación exitosa...
-                            if(username=="admintest"){
+                            if(username.equals("admintest")){
                                 Log.i("Authentication", "Autenticacion exitosa dirigiendo a pantalla principal222222");
                                 changeDatePreferences();
                                 Intent intent = new Intent(LoginActivity.this, ProductManagementActivity.class);
@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Salt no encontrado en la base de datos
                         verifyAttempts();
                         Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-                        Log.i("attempts counter", "Numero de intentos: " + intentos);
+                        Log.i("attempts counter", "Numero de intentos(else salt): " + intentos);
                     }
 
                 }
@@ -177,12 +177,18 @@ public class LoginActivity extends AppCompatActivity {
         int intentos = myPreferences.getInt("INTENTOS", 0);
         myEditor.putInt("INTENTOS", intentos+1);
 
-        Log.i("attempts counter", "Numero de intentos: " + intentos);
-        if (intentos+1 == 3){
+        Log.i("attempts counter", "Numero de intentos(VerifyAttempts): " + intentos);
+        if (intentos == 2) { // Cambiado de intentos+1 == 3 a intentos == 2
             Calendar calendar = Calendar.getInstance();
+            long fechaGuardada = myPreferences.getLong("FECHA", 0);
+
             long fechaActualEnMilisegundos = calendar.getTimeInMillis();
-            long fechaEnMinutos = fechaActualEnMilisegundos / (60 * 1000);
-            myEditor.putLong("FECHA", fechaEnMinutos);
+            long fechaEnMilisegundos = fechaActualEnMilisegundos - fechaGuardada;
+            long unDiaEnMilisegundos = 60 * 60 * 1000;
+
+            if (fechaEnMilisegundos >= unDiaEnMilisegundos) {
+                myEditor.putLong("FECHA", fechaActualEnMilisegundos);
+            }
         }
         myEditor.commit();
     }
@@ -190,6 +196,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences myPreferences
                 = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor myEditor = myPreferences.edit();
+
         myEditor.putInt("INTENTOS", 0);
         myEditor.putLong("FECHA", 0);
         myEditor.commit();
