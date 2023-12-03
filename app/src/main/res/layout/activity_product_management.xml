@@ -101,12 +101,27 @@
         android:layout_marginStart="101dp"
         android:layout_marginTop="13dp"
         android:layout_toEndOf="@+id/switchOnlineSale" />
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTotalExpense"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="59dp"
+        android:textAlignment="center"
+        android:background="#FF9800"
+        android:text="Lista de Pedidos"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
     <ListView
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewTitle"
-        android:layout_marginTop="16dp" />
+        android:layout_below="@+id/title1"
+        android:layout_marginTop="3dp" />
 
     <!-- Botón para realizar alguna acción -->
 

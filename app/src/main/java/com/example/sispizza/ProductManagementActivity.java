@@ -2,6 +2,7 @@ package com.example.sispizza;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.example.sispizza.database.DatabaseHelper;
@@ -14,7 +15,9 @@ public class ProductManagementActivity extends Activity {
     private DatabaseHelper db;
     private List<Product> productList;
     private ProductAdapter adapter;
-    private ListView listViewProducts;
+    private ListView listViewProducts, ListViewPedido;
+
+    private List<Pedido> pedidoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +25,19 @@ public class ProductManagementActivity extends Activity {
         setContentView(R.layout.activity_product_management);
 
         db = new DatabaseHelper(this);
-        listViewProducts = findViewById(R.id.listViewProducts);
+        //listViewProducts = findViewById(R.id.listViewProducts);
+        ListViewPedido = findViewById(R.id.listViewProducts);
+        Log.i("ProductManagementAA", "onCreate: AAA");
+        PedidoAdapter pedidoAdapter = new PedidoAdapter(this, GetData());
+        Log.i("ProductManagementAA", "onCreate: BBB"+GetData());
+        ListViewPedido.setAdapter(pedidoAdapter);
+        Log.i("ProductManagementAA", "onCreate: CCC");
+        //loadProducts();
+    }
 
-        loadProducts();
+    private List<Pedido> GetData() {
+        List<Pedido> pedidoList = db.obtenerTodosLosPedidos();
+        return pedidoList;
     }
 
     private void loadProducts() {
