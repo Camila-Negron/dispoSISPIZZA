@@ -7,38 +7,46 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!-- Botón de Carrito de Compras -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#e69026"
         android:orientation="horizontal">
 
-        <!-- SearchView existente -->
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:iconifiedByDefault="false"
-            android:queryHint="Buscar..."
-            android:layout_margin="20dp"
-            app:queryBackground="@android:color/white"
-            />
-
-        <!-- Nuevo botón para el carrito de compras -->
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="50dp"
+            android:layout_height="47dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/profile5"
+            tools:srcCompat="@drawable/profile5" />
         <Button
-            android:id="@+id/btCarrito"
-            android:layout_width="wrap_content"
+            android:id="@+id/salir3"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/accent"
-            android:backgroundTint="#123456"
-            android:text="Carrito" />
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="start"
+            android:backgroundTint="#00E83313"
+            android:textSize="20dp"
+            android:text="PIZZAS" />
+
+        <Button
+            android:id="@+id/salir"
+            android:layout_width="110dp"
+            android:layout_height="36dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#E83313"
+            android:text="Salir" />
+
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#e69026"
         android:orientation="vertical">
 
         <HorizontalScrollView
@@ -50,57 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2">
-
-                <Button
-                    android:id="@+id/btUno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#e69026"
-                    android:text="Pizza"
-                    android:textSize="25dp" />
-
-                <Button
-                    android:id="@+id/btDos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#e69026"
-                    android:text="Ensalada"
-                    android:textSize="25dp" />
-
-                <Button
-                    android:id="@+id/btTres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#e69026"
-                    android:text="Guarniciones"
-                    android:textSize="25dp" />
-
-                <Button
-                    android:id="@+id/btCuatro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#e69026"
-                    android:text="Bebidas"
-                    android:textSize="25dp" />
-
-            </LinearLayout>
+                android:weightSum="2"/>
 
         </HorizontalScrollView>
 
@@ -109,6 +67,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/flContainer1"/>
+        android:id="@+id/flContainer1">
+
+    </FrameLayout>
 
 </LinearLayout>

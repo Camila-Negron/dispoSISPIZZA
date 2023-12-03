@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ListaPedidosActivity listaPedidosActivity;
 
 
-    Button btuno, btdos,  bttres, btcuatro,btCarrito;
+    Button btuno, btdos,  bttres, btcuatro,btCarrito, btsalir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +37,8 @@ public class MainActivity extends AppCompatActivity {
         ensaladaFragment = new EnsaladaFragment();
         bebidaFragment = new BebidaFragment();
 
-        btuno = findViewById(R.id.btUno);
-        btdos = findViewById(R.id.btDos);
-        bttres = findViewById(R.id.btTres);
-        btcuatro = findViewById(R.id.btCuatro);
-        btCarrito = findViewById(R.id.btCarrito);
+
+        btsalir = findViewById(R.id.salir);
 
         //getSupportFragmentManager().beginTransaction().add(R.id.flContainer1,homeFragment).commit();
 
@@ -52,40 +49,27 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
-        btuno.setOnClickListener(new View.OnClickListener() {
+
+
+        btsalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.flContainer1,pizzaFragment).commit();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                //builder.setTitle("Confirmación");
+                builder.setMessage("¿Desea salir de la aplicación?");
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Toast.makeText(MainActivity.this, "Sí", Toast.LENGTH_SHORT).show();
+                        finish();
+                        System.exit(0);
+                    }
+                });
+                builder.setNegativeButton("No", null);
+                builder.create().show();
             }
         });
 
-        btdos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.flContainer1,guarnicionFragment).commit();
-            }
-        });
-
-        bttres.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.flContainer1,ensaladaFragment).commit();
-            }
-        });
-
-        btcuatro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.flContainer1,bebidaFragment).commit();
-            }
-        });
-
-        btCarrito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                abrirListaPedidos();
-            }
-        });
 
 
 
