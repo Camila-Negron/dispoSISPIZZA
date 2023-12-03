@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sispizza.database.DatabaseHelper;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class DetallePizza1 extends AppCompatActivity {
     private TextView txtAmount; // Referencia al TextView para mostrar la cantidad
@@ -33,34 +34,36 @@ public class DetallePizza1 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detallepizza1); // Asegúrate de tener el layout adecuado
-
+        // Obtén referencias a los elementos de la interfaz de usuario
+        txtAmount = findViewById(R.id.txtAmount);
+        textPrice = findViewById(R.id.textPrice);
         // Recibe los datos pasados desde el Intent
         Bundle extras = getIntent().getExtras();
+        precioPizza = extras.getDouble("precioPizza"); // Recupera el precio
+        Log.d("DetallePizza3", "Precio recibidoWWW: " + precioPizza);
         if (extras != null) {
             imagenPizzaId = extras.getInt("imagenPizza");
             descripcionPizza = extras.getString("descripcionPizza");
             precioPizza = extras.getDouble("precioPizza"); // Recupera el precio
-            Log.d("DetallePizza1", "Precio recibido: " + precioPizza);
-            Log.d("DetallePizza1", "Imagen recibido: " + imagenPizzaId);
-
+            if (precioPizza == 0) {
+                Log.d("DetallePizza3", "Precio es 0. Finalizando la actividad.");
+                finish();
+                return;  // Termina la ejecución del método onCreate
+            }
             // Muestra los datos en la interfaz de usuario
-            ImageView imageView = findViewById(R.id.imageView);
-            TextView descripcionTextView = findViewById(R.id.descriptionTextView);
+            //ImageView imageView = findViewById(R.id.imageView);
+            //TextView descripcionTextView = findViewById(R.id.descriptionTextView);
 
             //imageView.setImageResource(imagenPizzaId);
-            descripcionTextView.setText(descripcionPizza);
-
+            //descripcionTextView.setText(descripcionPizza);
             // Muestra el precio de la pizza en el TextView correspondiente
-            TextView precioPizzaTextView = findViewById(R.id.textPrice);
-            precioPizzaTextView.setText(String.format("Bs. %.2f", precioPizza));
-            Log.d("DetallePizza1", "Precio TextView recibido: " + precioPizza);
-
+            //TextView precioPizzaTextView = findViewById(R.id.textPrice);
+            //precioPizzaTextView.setText(String.format("Bs. %.2f", precioPizza));
             actualizarCantidadYPrecio();
         }
 
-        // Obtén referencias a los elementos de la interfaz de usuario
-        txtAmount = findViewById(R.id.txtAmount);
-        textPrice = findViewById(R.id.textPrice);
+
+
         EditText etCliente = findViewById(R.id.etCliente);
         RadioGroup radioGroupSalsas = findViewById(R.id.radioGroupSalsas);
 
@@ -92,10 +95,8 @@ public class DetallePizza1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log.d("DetallePizzaButton", "Posible error aqui: ");
                 // Obtén el valor del cliente ingresado por el usuario
                 String cliente = etCliente.getText().toString();
-                Log.d("DetallePizzaButton", "Posible error aqui:2 ");
                 // Obtén la descripción, cantidad y precio total
                 String descripcionPedido = descripcionPizza;
                 int cantidadPedido = cantidad;
@@ -105,7 +106,7 @@ public class DetallePizza1 extends AppCompatActivity {
                 String salsaElegida = obtenerSalsaSeleccionada(radioGroupSalsas);
 
                 // Luego, pasa la salsaElegida al método addPedido
-                long newRowId = dbHelper.addPedido(cliente, descripcionPedido, cantidadPedido, precioTotalPedido, salsaElegida);
+                long newRowId = dbHelper.addPedido("1", cliente, cantidadPedido, precioTotalPedido, salsaElegida);
                 Log.d("DetallePizzaButton", "Posible error aqui: 3");
                 if (newRowId != -1) {
                     // El pedido se agregó exitosamente a la base de datos
@@ -115,6 +116,15 @@ public class DetallePizza1 extends AppCompatActivity {
 
                     Intent intent = new Intent(DetallePizza1.this, MainActivity.class);
                     Log.d("DetallePizzaButton", "Posible error aqui: ");
+                    List<Pedido> listaPedidos = dbHelper.obtenerTodosLosPedidos(); // Suponiendo que tienes un método para obtener todos los pedidos
+                    for (Pedido pedido : listaPedidos) {
+                        Log.d("DetallePizzaButton", "ID: " + pedido.getId() +
+                                ", Cliente: " + pedido.getCliente() +
+                                ", Descripción: " + pedido.getDescripcion() +
+                                ", Cantidad: " + pedido.getCantidad() +
+                                ", Precio Total: " + pedido.getPrecioTotal() +
+                                ", Salsa: " + pedido.getSalsa());
+                    }
                     startActivity(intent);
 
                 } else {
@@ -127,14 +137,12 @@ public class DetallePizza1 extends AppCompatActivity {
 
     private void incrementarCantidad() {
         cantidad++;
-        Log.d("DetallePizzaPRecio", "Cambio de precio3");
         actualizarCantidadYPrecio();
     }
 
     private void decrementarCantidad() {
         if (cantidad > 1) {
             cantidad--;
-            Log.d("DetallePizzaPRecio", "Cambio de precio2");
             actualizarCantidadYPrecio();
         }
     }
@@ -144,17 +152,14 @@ public class DetallePizza1 extends AppCompatActivity {
     }
 
     private void actualizarPrecio() {
-        double precioTotal = cantidad * (precioPizza+17);
-        Log.d("DetallePizzaPRecio", "Cambio de precio");
+        double precioTotal = cantidad * (precioPizza);
         String precioFormateado = String.format("Bs. %.2f", precioTotal);
-        Log.d("DetallePizzaPRecio", "Cambio de precio real"+precioFormateado);
         textPrice.setText(precioFormateado);
     }
 
     private void actualizarCantidadYPrecio() {
         actualizarCantidad();
         actualizarPrecio();
-        Log.d("DetallePizzaPRecio", "Cambio de precio4");
     }
 
     private String obtenerSalsaSeleccionada(RadioGroup radioGroup) {

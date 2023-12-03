@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import com.example.sispizza.Pedido;
 import com.example.sispizza.Product;
 
 
@@ -346,6 +348,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public List<Pedido> obtenerTodosLosPedidos() {
+        List<Pedido> listaPedidos = new ArrayList<>();
+
+        // Abre una conexión de lectura a la base de datos
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Consulta la base de datos para obtener todos los pedidos
+        String query = "SELECT * FROM pedido";
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Obtiene los índices de las columnas
+        int idIndex = cursor.getColumnIndex("id");
+        int clienteIndex = cursor.getColumnIndex("cliente");
+        int descripcionIndex = cursor.getColumnIndex("descripcion");
+        int cantidadIndex = cursor.getColumnIndex("cantidad");
+        int precioTotalIndex = cursor.getColumnIndex("precio_total");
+        int salsaIndex = cursor.getColumnIndex("salsa");
+
+        // Itera a través del resultado de la consulta y agrega los pedidos a la lista
+        if (cursor.moveToFirst()) {
+            do {
+                // Utiliza los índices para obtener los valores de las columnas
+                int id = cursor.getInt(idIndex);
+                String cliente = cursor.getString(clienteIndex);
+                String descripcion = cursor.getString(descripcionIndex);
+                int cantidad = cursor.getInt(cantidadIndex);
+                double precioTotal = cursor.getDouble(precioTotalIndex);
+                String salsa = cursor.getString(salsaIndex);
+
+                // Crea un objeto Pedido y agrégalo a la lista
+                Pedido pedido = new Pedido(id, cliente, descripcion, cantidad, precioTotal, salsa);
+                listaPedidos.add(pedido);
+            } while (cursor.moveToNext());
+        }
+
+        // Cierra el cursor y la conexión de la base de datos
+        cursor.close();
+        db.close();
+
+        // Devuelve la lista de pedidos
+        return listaPedidos;
+    }
 
 
 

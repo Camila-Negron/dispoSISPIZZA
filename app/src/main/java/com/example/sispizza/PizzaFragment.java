@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,26 +39,29 @@ public class PizzaFragment extends Fragment {
                 pizzaList.add(new Pizza("Pizza Vegetariana", R.drawable.napolitana, "Vegetales frescos y queso.",65.50));
 
                 adapter = new PizzaAdapter( pizzaList);
-
+                recyclerView.setAdapter(adapter);
                 adapter.setOnDetalleClickListener(new PizzaAdapter.OnDetalleClickListener() {
                         @Override
                         public void onDetalleClick(int position) {
                                 // Manejar el clic del botón "Detalles" aquí
-
                                 Toast.makeText(getActivity(), "Detalles de la pizza en la posición " + position, Toast.LENGTH_SHORT).show();
-                                if (position == 0) {
-                                        // Crea un intent para abrir la actividad de detalles
-                                        Intent intent = new Intent(getActivity(), DetallePizza1.class);
 
-                                        startActivity(intent);
-                                }
+                                // Obtener la pizza seleccionada
+                                Pizza selectedPizza = pizzaList.get(position);
+
+                                // Crea un intent para abrir la actividad de detalles y pasa los datos
+                                Intent intent = new Intent(getActivity(), DetallePizza1.class);
+                                intent.putExtra("nombrePizza", selectedPizza.getNombre());
+                                intent.putExtra("imagenPizza", selectedPizza.getImagen());
+                                intent.putExtra("descripcionPizza", selectedPizza.getDescripcion());
+                                intent.putExtra("precioPizza", selectedPizza.getPrecio());
+                                Log.d("DetallePizza3", "Precio recibidoZZZ: " + selectedPizza.getPrecio());
+                                startActivity(intent);
                         }
 
 
                 });
 
-
-                recyclerView.setAdapter(adapter);
 
                 return view;
         }
